@@ -1,9 +1,11 @@
+let grid = document.querySelector("div.grid");
 
-function addElement () { 
-    for(var i = 0; i <= 200; i++){
-        var div = document.querySelectorAll("div.grid");
-        var newDiv = document.createElement("div");
-        newDiv.append(div);
-    } return newDiv.childNodes;
+function addElements () { 
+    for(var i = 0; i < 200; i++){
+        let newDiv = document.createElement("div");
+        grid.append(newDiv);
+        newDiv.className = "square";
+    } 
 }
 
+addElements();
