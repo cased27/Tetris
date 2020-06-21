@@ -1,8 +1,9 @@
-function addElement () {
-    var newDivs = [];
-    var currentDiv = document.getElementsByClassName("square");
-    newDivs.forEach(newDiv => currentDiv.addElement('<div class="square"></div>'));
-}
-addElement();
 
+function addElement () { 
+    for(var i = 0; i <= 200; i++){
+        var div = document.querySelectorAll("div.grid");
+        var newDiv = document.createElement("div");
+        newDiv.append(div);
+    } return newDiv.childNodes;
+}
 
