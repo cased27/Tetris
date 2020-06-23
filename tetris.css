@@ -1,5 +1,6 @@
 .container {
     display: flex;
+    justify-content: center;
 }
 
 .grid {
@@ -8,6 +9,8 @@
     display: flex;
     flex-wrap: wrap;
     background-color: #6AAFA5;
+    border: solid .7px #252525;
+    border-radius: 5px;
 }
 
 .grid div {
@@ -16,7 +19,7 @@
 }
 
 .tetromino {
-    background-color: blue;
+    background-color: #E3EFED;
 }
 
 .miniGrid {
@@ -25,7 +28,9 @@
     height: 80px;
     display: flex;
     flex-wrap: wrap;
-    background-color: yellow;
+    background-color: #F8E620;
+    border: solid .7px #252525;
+    border-radius: 5px;
 }
 
 .miniGrid div {
