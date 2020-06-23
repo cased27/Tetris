@@ -20,6 +20,8 @@
 
 .tetromino {
     background-color: #E3EFED;
+    border: solid .5px black;
+    box-sizing: border-box;
 }
 
 .miniGrid {
