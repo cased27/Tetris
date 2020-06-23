@@ -141,7 +141,7 @@ function moveLeft() {
 //move tetromino R, unless at edge or blocked
 function moveRight() {
     undraw()
-    const rightEdge = current.some(index => (currentPosition + index) % width === width -1)
+    const rightEdge = current.some(index => (currentPosition + index) % width === width - 1)
     if(!rightEdge) currentPosition += 1
     if(current.some(index => div[currentPosition + index].classList.contains('taken'))) {
         currentPosition -= 1;
