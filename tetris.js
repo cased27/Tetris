@@ -32,7 +32,7 @@
 
 
 var square = document.querySelectorAll(".square");
-var squares = Array.from(document.querySelectorAll('.grid div'));
+let squares = Array.from(document.querySelectorAll('.grid div'));
 var gridDivs = grid.getElementsByTagName("div");
 var taken = document.querySelectorAll(".taken");
 const width = 10;
@@ -84,13 +84,14 @@ let current = theTetrominoes[random][currentRotation];
 //draw first rotation in first tetromino
 function draw() {
     current.forEach(index => {
-        square[currentPosition + index].classList.add('tetromino')
+        squares[currentPosition + index].classList.add('tetromino')
+        console.log(squares);
     })
 }
 //undraw Tetromino
 function undraw() {
     current.forEach(index => {
-        square[currentPosition + index].classList.remove('tetromino')
+        squares[currentPosition + index].classList.remove('tetromino')
     })
 }
 //make Tetromino move down every second
@@ -118,7 +119,7 @@ function moveDown() {
 }
 
 function freeze() {
-    if(current.some(index => gridDivs[currentPosition + index + width].classList.contains('taken'))) {
+    if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
         current.forEach(index => gridDivs[currentPosition + index].classList.add('taken'))
     //start new Tetromino falling
         random = nextRandom
@@ -200,7 +201,6 @@ startButton.addEventListener("click", () => {
     }
 })
 
-//add Score
 function addScore() {
     for(let i = 0; i < 199; i += width){
         const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9]
@@ -213,16 +213,19 @@ function addScore() {
                 gridDivs[index].classList.remove('tetromino')
             })
             const squaresRemoved = squares.splice(i, width);
-            
             squares = squaresRemoved.concat(squares)
-            squares.forEach(cell => grid.appendChild(cell));
+            squares.forEach(cell => grid.append(cell));
         }
     }
 }
 
 function gameOver () {
-    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))){
+    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))){
         scoreDisplay.innerHTML = score + ' GAME OVER'
         clearInterval(timerId)
     }
 }
+
+//add restart button that resets game to play again
+//center the miniGrid tetrominos
+//color each tetromino shape?
