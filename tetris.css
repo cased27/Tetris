@@ -1,6 +1,34 @@
+h1 {
+    font-family: 'Holtwood One SC', sans-serif;
+    display: flex;
+    justify-content: center;
+}
+h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.utilities {
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+#startButton {
+    font-family: 'Bebas Neue',sans-serif;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+}
+
+
+
 .container {
     display: flex;
     justify-content: center;
+    align-items: flex-start;
 }
 
 .grid {
@@ -8,8 +36,8 @@
     height: 400px;
     display: flex;
     flex-wrap: wrap;
-    background-color: #6AAFA5;
-    border: solid .7px #252525;
+    background-color: #A8E5E5;
+    border: solid 3px #44413E;
     border-radius: 5px;
 }
 
@@ -30,8 +58,8 @@
     height: 80px;
     display: flex;
     flex-wrap: wrap;
-    background-color: #F8E620;
-    border: solid .7px #252525;
+    background-color: #A8C5E5;
+    border: solid 3px #44413E;
     border-radius: 5px;
 }
 
