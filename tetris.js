@@ -109,7 +109,7 @@ function control(e) {
         moveDown()
     }
 }
-document.addEventListener("keyup", control)
+document.addEventListener("keydown", control)
 
 function moveDown() {
     undraw();
