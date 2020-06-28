@@ -33,11 +33,11 @@
 
 var square = document.querySelectorAll(".square");
 let squares = Array.from(document.querySelectorAll('.grid div'));
-var gridDivs = grid.getElementsByTagName("div");
 var taken = document.querySelectorAll(".taken");
 const width = 10;
 const scoreDisplay = document.querySelector("#score");
 const startButton = document.querySelector("#startButton");
+const restartButton = document.querySelector("#restartButton");
 let nextRandom = 0
 let timerId
 let score = 0
@@ -120,7 +120,7 @@ function moveDown() {
 
 function freeze() {
     if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
-        current.forEach(index => gridDivs[currentPosition + index].classList.add('taken'))
+        current.forEach(index => squares[currentPosition + index].classList.add('taken'))
     //start new Tetromino falling
         random = nextRandom
         nextRandom = Math.floor(Math.random() * theTetrominoes.length)
@@ -138,7 +138,7 @@ function moveLeft() {
     undraw();
     const leftEdge = current.some(index => (currentPosition + index) % width === 0)
     if(!leftEdge) currentPosition -= 1;
-    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))) {
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         currentPosition += 1;
     }
     draw();
@@ -148,10 +148,11 @@ function moveRight() {
     undraw()
     const rightEdge = current.some(index => (currentPosition + index) % width === width - 1)
     if(!rightEdge) currentPosition += 1
-    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))) {
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         currentPosition -= 1;
     }
     draw()
+    moveDown()
 }
 
 //rotate Tetromino
@@ -201,6 +202,23 @@ startButton.addEventListener("click", () => {
     }
 })
 
+restartButton.addEventListener("click", () => {
+    //clear score & timerId
+    score = 0
+    clearInterval(timerId)
+    timerId = null
+    //remove shapes
+    undraw()
+    displaySquares.forEach(displaySquare => {
+        displaySquare.classList.remove('tetromino')
+    })
+    //redraw shapes at top &begin falling
+    draw()
+    displayShape()
+
+})
+
+
 function addScore() {
     for(let i = 0; i < 199; i += width){
         const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9]
@@ -209,8 +227,8 @@ function addScore() {
             score += 10
             scoreDisplay.innerHTML = score
             row.forEach(index => {
-                gridDivs[index].classList.remove('taken')
-                gridDivs[index].classList.remove('tetromino')
+                squares[index].classList.remove('taken')
+                squares[index].classList.remove('tetromino')
             })
             const squaresRemoved = squares.splice(i, width);
             squares = squaresRemoved.concat(squares)
@@ -220,7 +238,7 @@ function addScore() {
 }
 
 function gameOver () {
-    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))){
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))){
         scoreDisplay.innerHTML = score + ' GAME OVER'
         clearInterval(timerId)
     }
