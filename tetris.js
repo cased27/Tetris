@@ -31,7 +31,7 @@
 //END ADDING DIVS TO PAGE ** DO NOT MOVE ON PAGE
 
 
-var square = document.querySelectorAll(".square");
+var square = Array.from(document.querySelectorAll(".square"));
 let squares = Array.from(document.querySelectorAll('.grid div'));
 var taken = document.querySelectorAll(".taken");
 const width = 10;
@@ -85,7 +85,6 @@ let current = theTetrominoes[random][currentRotation];
 function draw() {
     current.forEach(index => {
         squares[currentPosition + index].classList.add('tetromino')
-        console.log(squares);
     })
 }
 //undraw Tetromino
@@ -169,7 +168,7 @@ function rotate() {
 //display up-next tetromino in miniGrid
 const displaySquares = document.querySelectorAll('.miniSquares')
 const displayWidth = 4
-let displayIndex = 0
+let displayIndex = 1
 
 //tetromino w/o rotations 
 const upNext = [
@@ -197,27 +196,31 @@ startButton.addEventListener("click", () => {
     } else {
         draw()
         timerId = setInterval(moveDown, 1000)
-        nextRandom = Math.floor(Math.random() * theTetrominoes.length)
         displayShape()
     }
 })
 
 restartButton.addEventListener("click", () => {
-    //clear score & timerId
-    score = 0
+    //clear score, timerId, classes from squares in main grid
     clearInterval(timerId)
-    timerId = null
-    //remove shapes
-    undraw()
-    displaySquares.forEach(displaySquare => {
-        displaySquare.classList.remove('tetromino')
+        //selects all squares in main grid, excluding 'taken' squares at bottom
+    square.forEach(gridSquare => {
+        gridSquare.classList.remove('tetromino')
+        gridSquare.classList.remove('taken')
     })
-    //redraw shapes at top &begin falling
+    score = 0
+    scoreDisplay.innerHTML = score
+    //begin new tetro falling
+    timerId = setInterval(moveDown, 1000)
+    random = nextRandom
+    nextRandom = Math.floor(Math.random() * theTetrominoes.length)
+    current = theTetrominoes[random][currentRotation]
+    currentPosition = 4
     draw()
     displayShape()
-
+    addScore()
+    gameOver()
 })
-
 
 function addScore() {
     for(let i = 0; i < 199; i += width){
@@ -237,9 +240,12 @@ function addScore() {
     }
 }
 
+let h2Element = document.querySelector("h2");
+
 function gameOver () {
     if(current.some(index => squares[currentPosition + index].classList.contains('taken'))){
-        scoreDisplay.innerHTML = score + ' GAME OVER'
+        scoreDisplay.innerHTML = score
+        h2Element.innerHTML = 'GAME OVER'
         clearInterval(timerId)
     }
 }
