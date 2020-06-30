@@ -31,7 +31,8 @@
 //END ADDING DIVS TO PAGE ** DO NOT MOVE ON PAGE
 
 
-var square = Array.from(document.querySelectorAll(".square"));
+// var square = Array.from(document.querySelectorAll(".square"));
+var square = document.querySelectorAll(".square")
 let squares = Array.from(document.querySelectorAll('.grid div'));
 var taken = document.querySelectorAll(".taken");
 const width = 10;
@@ -250,6 +251,4 @@ function gameOver () {
     }
 }
 
-//add restart button that resets game to play again
-//center the miniGrid tetrominos
 //color each tetromino shape?
