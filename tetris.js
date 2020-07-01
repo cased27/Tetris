@@ -2,14 +2,14 @@
     const grid = document.querySelector(".grid");
     const miniGrid = document.querySelector(".miniGrid");
 
-    function addElements () { 
+    function addDivElements () { 
         for(var i = 0; i < 200; i++){
             let newDiv = document.createElement("div");
             grid.append(newDiv);
             newDiv.className = "square";
         } 
     } 
-    addElements();
+    addDivElements();
 
     function addTaken () {
         for(var i = 0; i < 10; i++){
@@ -31,13 +31,12 @@
 //END ADDING DIVS TO PAGE ** DO NOT MOVE ON PAGE
 
 
-var square = document.querySelectorAll(".square");
+let square = document.querySelectorAll(".square")
 let squares = Array.from(document.querySelectorAll('.grid div'));
-var gridDivs = grid.getElementsByTagName("div");
-var taken = document.querySelectorAll(".taken");
 const width = 10;
 const scoreDisplay = document.querySelector("#score");
 const startButton = document.querySelector("#startButton");
+const restartButton = document.querySelector("#restartButton");
 let nextRandom = 0
 let timerId
 let score = 0
@@ -85,7 +84,6 @@ let current = theTetrominoes[random][currentRotation];
 function draw() {
     current.forEach(index => {
         squares[currentPosition + index].classList.add('tetromino')
-        console.log(squares);
     })
 }
 //undraw Tetromino
@@ -94,8 +92,6 @@ function undraw() {
         squares[currentPosition + index].classList.remove('tetromino')
     })
 }
-//make Tetromino move down every second
-// timerId = setInterval(moveDown, 1000)
 
 //assign keyCodes
 function control(e) {
@@ -109,7 +105,7 @@ function control(e) {
         moveDown()
     }
 }
-document.addEventListener("keyup", control)
+document.addEventListener("keydown", control)
 
 function moveDown() {
     undraw();
@@ -120,15 +116,15 @@ function moveDown() {
 
 function freeze() {
     if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
-        current.forEach(index => gridDivs[currentPosition + index].classList.add('taken'))
-    //start new Tetromino falling
+        current.forEach(index => squares[currentPosition + index].classList.add('taken'))
+    //start new Tetromino falling   
         random = nextRandom
         nextRandom = Math.floor(Math.random() * theTetrominoes.length)
         current = theTetrominoes[random][currentRotation]
         currentPosition = 4
+        addScore()
         draw()
         displayShape()
-        addScore()
         gameOver()
     }
 };
@@ -138,7 +134,7 @@ function moveLeft() {
     undraw();
     const leftEdge = current.some(index => (currentPosition + index) % width === 0)
     if(!leftEdge) currentPosition -= 1;
-    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))) {
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         currentPosition += 1;
     }
     draw();
@@ -148,10 +144,11 @@ function moveRight() {
     undraw()
     const rightEdge = current.some(index => (currentPosition + index) % width === width - 1)
     if(!rightEdge) currentPosition += 1
-    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))) {
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         currentPosition -= 1;
     }
     draw()
+    moveDown()
 }
 
 //rotate Tetromino
@@ -168,7 +165,7 @@ function rotate() {
 //display up-next tetromino in miniGrid
 const displaySquares = document.querySelectorAll('.miniSquares')
 const displayWidth = 4
-let displayIndex = 0
+let displayIndex = 1
 
 //tetromino w/o rotations 
 const upNext = [
@@ -188,7 +185,6 @@ function displayShape () {
     })
 }
 
-//add functionality to button
 startButton.addEventListener("click", () => {
     if(timerId) {
         clearInterval(timerId)
@@ -196,9 +192,30 @@ startButton.addEventListener("click", () => {
     } else {
         draw()
         timerId = setInterval(moveDown, 1000)
-        nextRandom = Math.floor(Math.random() * theTetrominoes.length)
         displayShape()
     }
+})
+
+restartButton.addEventListener("click", () => {
+    //clear score, timerId, classes from squares in main grid
+    clearInterval(timerId)
+        //selects all squares in main grid, excluding 'taken' squares at bottom
+    square.forEach(cell => {
+        cell.classList.remove('tetromino')
+        cell.classList.remove('taken')
+    })
+    score = 0
+    scoreDisplay.innerHTML = score
+    //begin new tetro falling
+    timerId = setInterval(moveDown, 1000)
+    random = nextRandom
+    nextRandom = Math.floor(Math.random() * theTetrominoes.length)
+    current = theTetrominoes[random][currentRotation]
+    currentPosition = 4
+    draw()
+    displayShape()
+    addScore()
+    gameOver()
 })
 
 function addScore() {
@@ -209,23 +226,24 @@ function addScore() {
             score += 10
             scoreDisplay.innerHTML = score
             row.forEach(index => {
-                gridDivs[index].classList.remove('taken')
-                gridDivs[index].classList.remove('tetromino')
+                squares[index].classList.remove('taken')
+                squares[index].classList.remove('tetromino')
             })
-            const squaresRemoved = squares.splice(i, width);
-            squares = squaresRemoved.concat(squares)
-            squares.forEach(cell => grid.append(cell));
+        const squaresRemoved = squares.splice(i, width);
+        squares = squaresRemoved.concat(squares);
+        squares.forEach(cell => grid.append(cell));
         }
     }
 }
 
+let h2Element = document.querySelector("h2");
+
 function gameOver () {
-    if(current.some(index => gridDivs[currentPosition + index].classList.contains('taken'))){
-        scoreDisplay.innerHTML = score + ' GAME OVER'
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))){
+        scoreDisplay.innerHTML = score
+        h2Element.innerHTML = 'GAME OVER'
         clearInterval(timerId)
     }
 }
 
-//add restart button that resets game to play again
-//center the miniGrid tetrominos
 //color each tetromino shape?
