@@ -2,14 +2,14 @@
     const grid = document.querySelector(".grid");
     const miniGrid = document.querySelector(".miniGrid");
 
-    function addElements () { 
+    function addDivElements () { 
         for(var i = 0; i < 200; i++){
             let newDiv = document.createElement("div");
             grid.append(newDiv);
             newDiv.className = "square";
         } 
     } 
-    addElements();
+    addDivElements();
 
     function addTaken () {
         for(var i = 0; i < 10; i++){
@@ -31,10 +31,8 @@
 //END ADDING DIVS TO PAGE ** DO NOT MOVE ON PAGE
 
 
-// var square = Array.from(document.querySelectorAll(".square"));
-var square = document.querySelectorAll(".square")
+let square = document.querySelectorAll(".square")
 let squares = Array.from(document.querySelectorAll('.grid div'));
-var taken = document.querySelectorAll(".taken");
 const width = 10;
 const scoreDisplay = document.querySelector("#score");
 const startButton = document.querySelector("#startButton");
@@ -94,8 +92,6 @@ function undraw() {
         squares[currentPosition + index].classList.remove('tetromino')
     })
 }
-//make Tetromino move down every second
-// timerId = setInterval(moveDown, 1000)
 
 //assign keyCodes
 function control(e) {
@@ -121,14 +117,14 @@ function moveDown() {
 function freeze() {
     if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
         current.forEach(index => squares[currentPosition + index].classList.add('taken'))
-    //start new Tetromino falling
+    //start new Tetromino falling   
         random = nextRandom
         nextRandom = Math.floor(Math.random() * theTetrominoes.length)
         current = theTetrominoes[random][currentRotation]
         currentPosition = 4
+        addScore()
         draw()
         displayShape()
-        addScore()
         gameOver()
     }
 };
@@ -189,7 +185,6 @@ function displayShape () {
     })
 }
 
-//add functionality to button
 startButton.addEventListener("click", () => {
     if(timerId) {
         clearInterval(timerId)
@@ -205,9 +200,9 @@ restartButton.addEventListener("click", () => {
     //clear score, timerId, classes from squares in main grid
     clearInterval(timerId)
         //selects all squares in main grid, excluding 'taken' squares at bottom
-    square.forEach(gridSquare => {
-        gridSquare.classList.remove('tetromino')
-        gridSquare.classList.remove('taken')
+    square.forEach(cell => {
+        cell.classList.remove('tetromino')
+        cell.classList.remove('taken')
     })
     score = 0
     scoreDisplay.innerHTML = score
@@ -234,9 +229,9 @@ function addScore() {
                 squares[index].classList.remove('taken')
                 squares[index].classList.remove('tetromino')
             })
-            const squaresRemoved = squares.splice(i, width);
-            squares = squaresRemoved.concat(squares)
-            squares.forEach(cell => grid.append(cell));
+        const squaresRemoved = squares.splice(i, width);
+        squares = squaresRemoved.concat(squares);
+        squares.forEach(cell => grid.append(cell));
         }
     }
 }

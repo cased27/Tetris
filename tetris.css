@@ -34,11 +34,11 @@ h2 {
     text-align: center;
     color: black;
     font-size: 70px;
-    animation-duration: 3s;
+    /* animation-duration: 3s;
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     height: auto;
-    width: auto;
+    width: auto; */
 }
 
 h3 {
