@@ -246,4 +246,3 @@ function gameOver () {
     }
 }
 
-//color each tetromino shape?
